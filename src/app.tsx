@@ -37,3 +37,8 @@ export const layout = () => {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
   };
 };
+
+/**
+ * 路由拦截，可以做一些埋点动作
+ */
+export function onRouteChange({ location, routes, action }: any) {}

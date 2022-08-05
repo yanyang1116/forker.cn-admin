@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 
-const New: React.FC = () => {
+const Edit: React.FC = () => {
   const { name } = useModel('global');
   return (
     <PageContainer ghost>
@@ -13,4 +13,4 @@ const New: React.FC = () => {
   );
 };
 
-export default New;
+export default Edit;

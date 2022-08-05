@@ -1,16 +1,30 @@
-import { PageContainer } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
+import React from 'react';
+import { columns } from './const';
+import { tableListDataSource } from './mock';
 
-const List: React.FC = () => {
-  const { name } = useModel('global');
+const PageList: React.FC = () => {
   return (
     <PageContainer ghost>
-      <div>
-        {/* <Guide name={trim(name)} /> */}
-        List
-      </div>
+      <ProTable<IArticleItem>
+        columns={columns}
+        request={(params, sorter, filter) => {
+          return Promise.resolve({
+            data: tableListDataSource,
+            success: true,
+            total: tableListDataSource.length,
+          });
+        }}
+        rowKey="id"
+        pagination={{
+          defaultCurrent: 1,
+          pageSize: 10,
+        }}
+        toolBarRender={false}
+        search={false}
+      />
     </PageContainer>
   );
 };
 
-export default List;
+export default PageList;
