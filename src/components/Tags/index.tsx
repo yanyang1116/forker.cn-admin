@@ -37,7 +37,11 @@ export default (props: { source: string[] }) => {
     <>
       {source.map((item, index) => {
         return (
-          <Tag key={index} color={randomColor[index]}>
+          <Tag
+            key={index}
+            color={randomColor[index]}
+            style={{ marginTop: '.6em' }}
+          >
             {item}
           </Tag>
         );

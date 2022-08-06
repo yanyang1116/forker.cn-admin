@@ -2,6 +2,8 @@
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
+import logo from './assets/mz.jpeg';
+
 export async function getInitialState(): Promise<{
   name: string;
   logout: Record<string, any>;
@@ -16,6 +18,9 @@ export async function getInitialState(): Promise<{
  * 这个 layout 字段，是 umi layout 的【运行时】配置
  * umi layout，需要在 .umirc 里【开启】，并且写入【构建时】配置：
  * https://umijs.org/docs/max/layout-menu
+ *
+ * 这个是和 umi 一起使用对一个文档，一定要看：
+ * https://procomponents.ant.design/components/layout#%E5%92%8C-umi-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8
  *
  * 这个配置里对返回值，是 umi 暴露给我们的，我们要按照 umi 对约定来
  *
@@ -32,9 +37,9 @@ export const layout = () => {
     //   alert(123123)
     // },
     // rightContentRender: () => <div>asfd</div>,
-    siderWidth: 210,
+    siderWidth: 180,
     title: 'hi, yy',
-    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+    logo: <img src={logo} style={{ height: '60px', marginRight: '.5em' }} />,
   };
 };
 

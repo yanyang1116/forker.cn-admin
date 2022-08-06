@@ -5,7 +5,7 @@ import { tableListDataSource } from './mock';
 
 const PageList: React.FC = () => {
   return (
-    <PageContainer ghost>
+    <PageContainer>
       <ProTable<IArticleItem>
         columns={columns}
         request={(params, sorter, filter) => {

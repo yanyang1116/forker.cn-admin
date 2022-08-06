@@ -4,7 +4,7 @@ import { useModel } from '@umijs/max';
 const Edit: React.FC = () => {
   const { name } = useModel('global');
   return (
-    <PageContainer ghost>
+    <PageContainer>
       <div>
         {/* <Guide name={trim(name)} /> */}
         new
