@@ -36,10 +36,20 @@ export const layout = () => {
     // logout: () => {
     //   alert(123123)
     // },
-    // rightContentRender: () => <div>asfd</div>,
     siderWidth: 180,
-    title: 'hi, yy',
     logo: <img src={logo} style={{ height: '60px', marginRight: '.5em' }} />,
+    menuFooterRender() {
+      return <p style={{ textAlign: 'center', fontSize: 12 }}>©2022 yy</p>;
+    },
+    postMenuData(data: any) {
+      // 为了删除一个 umi 特定对标记，真的垃圾
+      const removeDOM = document.querySelector(
+        '.umi-plugin-layout-right',
+      ) as any;
+      if (removeDOM) removeDOM.innerHTML = '';
+      // 要返回 data 来下一步处理菜单
+      return data;
+    },
   };
 };
 

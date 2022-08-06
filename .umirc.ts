@@ -8,7 +8,6 @@
 import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
-  antd: {},
   access: {},
   model: {},
   initialState: {},
@@ -19,12 +18,18 @@ export default defineConfig({
    * https://umijs.org/docs/max/layout-menu
    * 这个地方，只有【构建时】配置
    * src/app.tsx 里有【运行时】约定，两者需要一起进行配置才能更好的使用
+   *
+   * 这个是和 umi 一起使用对一个文档，一定要看：
+   * https://procomponents.ant.design/components/layout#%E5%92%8C-umi-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8
    */
+  antd: {},
   layout: {
     title: 'hi, yy',
+    name: '12312',
   },
 
   routes: [
+    // 注意，不配置 name ，就不会再菜单里显示出来
     {
       name: 'Dashboard',
       path: '/',
@@ -39,16 +44,14 @@ export default defineConfig({
       component: './Edit',
       routes: [
         {
-          name: '编辑',
           extra: true,
           path: '/edit/:id',
           component: './Edit',
           /**
-           * 因为父路由已经整个菜单隐藏了，这里只要配置不展示【面包屑】、【菜单项】即可
+           * 因为父路由已经整个菜单隐藏了，这里只要配置不展示【面包屑】即可
            * 注意：【面包屑】在二级路由对时候会自动展示
            */
           hideInBreadcrumb: true,
-          hideInMenu: true,
         },
       ],
       // 新窗口打开
@@ -74,14 +77,11 @@ export default defineConfig({
      * 下面通过配置，能够脱离 layout，变成一个单独对页面布局
      */
     {
-      name: '登录',
       path: '/login',
       component: './Login',
       exact: true,
       // 到来这个路由，整个菜单不展示
       menuRender: false,
-      // 隐藏自己和子菜单（菜单项）
-      hideInMenu: true,
     },
   ],
 
