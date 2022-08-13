@@ -12,7 +12,7 @@ export default defineConfig({
   model: {},
   initialState: {},
   request: {},
-  // plugins: ['./plugins/menuRoute.js'], // 引入自定义插件对例子
+  // plugins: ['./plugins/menuRoute.cjs'], // 引入自定义插件的例子
   /**
    * 关于此配置项，可以参考：
    * https://umijs.org/docs/max/layout-menu

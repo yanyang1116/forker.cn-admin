@@ -8,7 +8,7 @@
  * 所以这里使用 declare global 来处理
  */
 
-import { EnumArticleStatus } from './module.d';
+import { EnumArticleStatus } from './global.enum';
 
 declare global {
   interface IArticleItem {

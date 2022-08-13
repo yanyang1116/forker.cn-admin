@@ -2,7 +2,7 @@ import type { ProColumns } from '@ant-design/pro-components';
 import { Divider, Popconfirm } from 'antd';
 
 import Tags from '@/components/Tags';
-import { EnumArticleStatus } from '@/typing/module.d';
+import { EnumArticleStatus } from '@/typing/global.enum';
 import styles from './index.less';
 
 const confirmNode = (text: string) => (

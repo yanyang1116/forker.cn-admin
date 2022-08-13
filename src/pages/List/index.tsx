@@ -1,7 +1,7 @@
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import React from 'react';
+import * as api from '../../api/article/index';
 import { columns } from './const';
-import { tableListDataSource } from './mock';
 
 const PageList: React.FC = () => {
   return (
@@ -9,11 +9,15 @@ const PageList: React.FC = () => {
       <ProTable<IArticleItem>
         columns={columns}
         request={(params, sorter, filter) => {
-          return Promise.resolve({
-            data: tableListDataSource,
-            success: true,
-            total: tableListDataSource.length,
+          return api.list({
+            pageSize: params.pageSize,
+            pageNum: params.current,
           });
+          // Promise.resolve({
+          //   data: tableListDataSource,
+          //   success: true,
+          //   total: tableListDataSource.length,
+          // });
         }}
         rowKey="id"
         pagination={{

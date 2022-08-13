@@ -1,4 +1,4 @@
-import { EnumArticleStatus } from '../../typing/module.d';
+import { EnumArticleStatus } from '../../typing/global.enum';
 
 export const tableListDataSource = [
   {
