@@ -1,3 +1,15 @@
-node_modules
 .umi
 .umi-production
+
+dist/
+.husky/
+node_modules/
+
+.DS_Store
+*.log
+.gitignore
+
+.vscode
+.editorconfig
+.prettierignore
+*.lock
