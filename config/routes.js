@@ -2,7 +2,9 @@
  * @file
  * umi 的路由配置，会被导入 .umirc 文件
  * 注意，umi 的路由和它自己的 layout 插件深度挂钩
- * 会暴露一些 menuRender、icon、target、hideInBreadcrumb 的额外配置
+ * layout 又和 antd 深度挂钩
+ * 所以会暴露一些 menuRender、icon、target、hideInBreadcrumb 的额外配置
+ * https://v2-pro.ant.design/docs/layout-cn
  */
 export default [
 	// 注意，不配置 name ，就不会再菜单里显示出来
