@@ -1,6 +1,6 @@
 import { extraHeaders, get } from '../request';
-import { IPlist } from './params.d';
-import { IRlist } from './response.d';
+import { IPList } from './params.d';
+import { IRList } from './response.d';
 
-export const list = (params?: IPlist, headers?: extraHeaders) =>
-	get<IRlist>()('/api/article/list', params, headers, true);
+export const list = (params?: IPList, headers?: extraHeaders) =>
+	get<IRList>()('/api/article/list', params, headers, true);

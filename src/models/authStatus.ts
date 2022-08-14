@@ -1,9 +1,13 @@
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export default {
-	namespace: 'count',
+	namespace: 'authStatus',
 	state: {
-		num: 0,
+		isAdmin: false,
+		edit: false,
+		view: false,
+		delete: false,
+		create: false,
 	},
 	reducers: {
 		add(state: any) {

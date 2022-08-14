@@ -1,4 +1,4 @@
-export interface IPlist {
-  pageSize?: number;
-  pageNum?: number;
+export interface IPList {
+	pageSize?: number;
+	pageNum?: number;
 }

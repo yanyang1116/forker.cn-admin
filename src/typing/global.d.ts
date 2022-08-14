@@ -14,6 +14,12 @@ declare global {
 	interface IResponseError {
 		message: string;
 	}
+	interface IAuthStatus {
+		edit: boolean;
+		view: boolean;
+		delete: boolean;
+		create: boolean;
+	}
 	interface IResponse {
 		success: boolean;
 		value: any;

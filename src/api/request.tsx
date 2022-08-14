@@ -7,6 +7,7 @@
 import { Spin } from 'antd';
 import axios, { AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 import * as ReactDOMServer from 'react-dom/server';
+import store2 from 'store2';
 
 import styles from './index.less';
 // TODO 还未解决
@@ -16,6 +17,7 @@ import baseConfig from '../../config/base.js';
 /**
  * 由于 umi 太变态了，只能这么搞
  * 最根本的问题是找不到容器节点
+ * TODO，回头换一下 antd 的 message 试一下，如果可以的话，看看怎么实现的
  */
 let initLoading = false;
 let isLoading = false;
@@ -30,8 +32,9 @@ if (!initLoading) {
 }
 
 export type extraHeaders = Record<string, any> & {
-	responseType: ResponseType;
-	withCredentials: boolean;
+	responseType?: ResponseType;
+	withCredentials?: boolean;
+	Authorization?: string;
 };
 
 /**
@@ -48,7 +51,7 @@ async function axiosReqFn<ResDetail = any>(
 		return res.data.value;
 	} catch (err) {
 		const _err: IResponseError = {
-			message: JSON.stringify(err),
+			message: typeof err === 'string' ? err : JSON.stringify(err),
 		};
 		throw _err;
 	}
@@ -86,6 +89,10 @@ function sendWrap<ResDetail>(method: 'post' | 'get') {
 			method,
 			url: path,
 			baseURL: baseConfig.host,
+			headers: {
+				// 这里把 jw token 带进去
+				Authorization: store2.get('token'),
+			},
 		};
 		// 传入额外头部信息的情况
 		if (typeof query !== 'boolean' && query) {
@@ -93,10 +100,14 @@ function sendWrap<ResDetail>(method: 'post' | 'get') {
 				...config,
 				withCredentials: !!query.withCredentials,
 				responseType: query.responseType,
-				headers: query,
+				headers: {
+					...config.headers,
+					...query,
+				},
 				baseURL: query.baseURL ?? `${baseConfig.host}`,
 			};
 		}
+
 		config.method === 'get' && (config.params = parmas);
 		config.method === 'post' && (config.data = parmas);
 

@@ -6,6 +6,8 @@
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
+import { history } from '@umijs/max';
+import store2 from 'store2';
 import logo from './assets/mz.jpeg';
 
 export async function getInitialState(): Promise<{
@@ -69,13 +71,24 @@ export function onRouteChange({ location, routes, action }: any) {}
 /**
  * https://v3.umijs.org/zh-CN/docs/runtime-config#renderoldrender-function
  */
-// export function render(oldRender: () => any) {
-// ReactDOM.createPortal(<div>123123</div>, document.head)
-// fetch('/api/auth').then(auth => {
-//   if (auth.isLogin) { oldRender() }
-//   else {
-// 	history.push('/login');
-// 	oldRender()
-//   }
-// });
-//   }
+export function render(oldRender: () => any) {
+	oldRender();
+	/**
+	 * 一定要写在 oldRender 后面，才能拿到 history
+	 */
+	if (!store2.get('token')) {
+		history.push('/login');
+		return;
+	}
+
+	// oldRender();
+	// export function render(oldRender) {
+	// 	fetch('/api/auth').then(auth => {
+	// 	  if (auth.isLogin) { oldRender() }
+	// 	  else {
+
+	// 		oldRender()
+	// 	  }
+	// 	});
+	//   }
+}

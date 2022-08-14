@@ -32,5 +32,7 @@ export default defineConfig({
 		name: '12312',
 	},
 	npmClient: 'yarn',
+
+	// https://v3.umijs.org/zh-CN/plugins/plugin-dva#skipmodelvalidate
 	dva: {},
 });
