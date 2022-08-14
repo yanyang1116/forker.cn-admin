@@ -11,17 +11,25 @@
 import { EnumArticleStatus } from './global.enum';
 
 declare global {
-  interface IArticleItem {
-    id: number;
-    title: string;
-    abstract: string;
-    createTime: number;
-    modifyTime: number;
-    author: string;
-    original: boolean;
-    tags: string[];
-    status: EnumArticleStatus;
-    views: number;
-    likes: number;
-  }
+	interface IResponseError {
+		message: string;
+	}
+	interface IResponse {
+		success: boolean;
+		value: any;
+		message?: string;
+	}
+	interface IArticleItem {
+		id: number;
+		title: string;
+		abstract: string;
+		createTime: number;
+		modifyTime: number;
+		author: string;
+		original: boolean;
+		tags: string[];
+		status: EnumArticleStatus;
+		views: number;
+		likes: number;
+	}
 }

@@ -1,1 +1,5 @@
-export interface IRlist extends IArticleItem {}
+export interface IRlist {
+	total: number;
+	list: IArticleItem;
+	nextPage: boolean;
+}

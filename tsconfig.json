@@ -1,3 +1,15 @@
 {
-  "extends": "./src/.umi/tsconfig.json"
+	"extends": "./src/.umi/tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"paths": {
+			"@/*": ["src/*"],
+			"@@/*": ["src/.umi/*"],
+			"@umijs/max": [
+				"/Users/yy/Documents/github/forker.cn-admin/node_modules/umi"
+			],
+			"@umijs/max/typings": ["src/.umi/typings"],
+			"@config/*": ["./config/*"]
+		}
+	}
 }

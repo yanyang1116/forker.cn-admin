@@ -1,17 +1,21 @@
-// 运行时配置
+/**
+ * 运行时配置
+ * https://v3.umijs.org/zh-CN/docs/runtime-config
+ * 我真实觉得 umi 太难用了
+ */
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
 import logo from './assets/mz.jpeg';
 
 export async function getInitialState(): Promise<{
-  name: string;
-  logout: Record<string, any>;
+	name: string;
+	logout: Record<string, any>;
 }> {
-  return {
-    name: '@umijs/max',
-    logout: {},
-  };
+	return {
+		name: '@umijs/max',
+		logout: {},
+	};
 }
 
 /**
@@ -31,29 +35,47 @@ export async function getInitialState(): Promise<{
  * 但是还是发现有些 props 【不能】生效
  */
 export const layout = () => {
-  return {
-    // 没研究出来
-    // logout: () => {
-    //   alert(123123)
-    // },
-    siderWidth: 180,
-    logo: <img src={logo} style={{ height: '60px', marginRight: '.5em' }} />,
-    menuFooterRender() {
-      return <p style={{ textAlign: 'center', fontSize: 12 }}>©2022 yy</p>;
-    },
-    postMenuData(data: any) {
-      // 为了删除一个 umi 特定对标记，真的垃圾
-      const removeDOM = document.querySelector(
-        '.umi-plugin-layout-right',
-      ) as any;
-      if (removeDOM) removeDOM.innerHTML = '';
-      // 要返回 data 来下一步处理菜单
-      return data;
-    },
-  };
+	return {
+		// 没研究出来
+		// logout: () => {
+		//   alert(123123)
+		// },
+		siderWidth: 180,
+		logo: (
+			<img src={logo} style={{ height: '60px', marginRight: '.5em' }} />
+		),
+		menuFooterRender() {
+			return (
+				<p style={{ textAlign: 'center', fontSize: 12 }}>©2022 yy</p>
+			);
+		},
+		postMenuData(data: any) {
+			// 为了删除一个 umi 特定对标记，真的垃圾
+			const removeDOM = document.querySelector(
+				'.umi-plugin-layout-right'
+			) as any;
+			if (removeDOM) removeDOM.innerHTML = '';
+			// 要返回 data 来下一步处理菜单
+			return data;
+		},
+	};
 };
 
 /**
  * 路由拦截，可以做一些埋点动作
  */
 export function onRouteChange({ location, routes, action }: any) {}
+
+/**
+ * https://v3.umijs.org/zh-CN/docs/runtime-config#renderoldrender-function
+ */
+// export function render(oldRender: () => any) {
+// ReactDOM.createPortal(<div>123123</div>, document.head)
+// fetch('/api/auth').then(auth => {
+//   if (auth.isLogin) { oldRender() }
+//   else {
+// 	history.push('/login');
+// 	oldRender()
+//   }
+// });
+//   }
