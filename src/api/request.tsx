@@ -44,17 +44,18 @@ export type extraHeaders = Record<string, any> & {
 async function axiosReqFn<ResDetail = any>(
 	config: AxiosRequestConfig<IResponse>
 ): Promise<ResDetail> {
-	try {
-		const res: AxiosResponse<IResponse> = await axios(config);
-		if (res.status !== 200) throw res.statusText;
-		if (!res.data.success) throw res.data.message;
-		return res.data.value;
-	} catch (err) {
-		const _err: IResponseError = {
-			message: typeof err === 'string' ? err : JSON.stringify(err),
-		};
-		throw _err;
-	}
+	// try {
+	const res: AxiosResponse<IResponse> = await axios(config);
+	if (res.status !== 200) throw res.statusText;
+	if (!res.data.success) throw res.data.message;
+	return res.data.value;
+	// }
+	// catch (err) {
+	// 	// const _err: IResponseError = {
+	// 	// 	// message: typeof err === 'string' ? err : JSON.stringify(err),
+	// 	// };
+	// 	throw err;
+	// }
 }
 
 function sendWrap<ResDetail>(method: 'post' | 'get') {

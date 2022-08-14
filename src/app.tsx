@@ -6,7 +6,7 @@
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
-import { history } from '@umijs/max';
+import { getDvaApp, history } from '@umijs/max';
 import store2 from 'store2';
 import logo from './assets/mz.jpeg';
 
@@ -66,7 +66,23 @@ export const layout = () => {
 /**
  * 路由拦截，可以做一些埋点动作
  */
-export function onRouteChange({ location, routes, action }: any) {}
+export function onRouteChange({ location, routes, action }: any) {
+	/**
+	 * 权限未初始化过，重新请求
+	 * 本来想在 render 里写的，没想到智障的 umi 拿不到 dva
+	 */
+	if (!store2.get('token')) return;
+	const dva = getDvaApp();
+	const authModel = dva._models.find(
+		(item: any) => item.namespace === 'authStatus'
+	);
+	if (!authModel.state.inited) {
+		const { dispatch } = dva._store;
+		dispatch({
+			type: 'authStatus/reqAuth',
+		});
+	}
+}
 
 /**
  * https://v3.umijs.org/zh-CN/docs/runtime-config#renderoldrender-function
@@ -80,15 +96,4 @@ export function render(oldRender: () => any) {
 		history.push('/login');
 		return;
 	}
-
-	// oldRender();
-	// export function render(oldRender) {
-	// 	fetch('/api/auth').then(auth => {
-	// 	  if (auth.isLogin) { oldRender() }
-	// 	  else {
-
-	// 		oldRender()
-	// 	  }
-	// 	});
-	//   }
 }

@@ -1,4 +1,4 @@
-import { IPlogin } from '@/api/common/params';
+import { IPLogin } from '@/api/common/params';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -9,17 +9,19 @@ import * as api from '../../api/common/index';
 import logo from '../../assets/mz.jpeg';
 
 export default () => {
-	const handleLogin = useCallback(async (values: IPlogin) => {
+	const handleLogin = useCallback(async (values: IPLogin) => {
 		let token = '';
 		try {
 			token = await api.login(values);
 			store2.set('token', token);
-
-			// message.success('登录成功');
+			message.success('登录成功');
+			// 拿权限的动作，在全局里会有拦截，这里只管跳转
 			history.push('/');
 		} catch (err) {
 			message.error(
-				(err as IResponseError).message ?? JSON.stringify(err)
+				typeof err === 'string'
+					? err
+					: (err as IResponseError).message ?? JSON.stringify(err)
 			);
 		}
 	}, []);
