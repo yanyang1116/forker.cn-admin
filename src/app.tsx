@@ -1,9 +1,8 @@
 /**
  * 运行时配置
  * https://v3.umijs.org/zh-CN/docs/runtime-config
- * 我真实觉得 umi 太难用了
  */
-import { getDvaApp, history } from '@umijs/max';
+import { history } from '@umijs/max';
 import store2 from 'store2';
 
 import { authStatus as authStatusApi } from './api/common/index';
@@ -33,6 +32,16 @@ export async function getInitialState() {
 	}
 	return {
 		auth,
+		/**
+		 * 艹！真是沙雕文档
+		 * https://v3.umijs.org/zh-CN/plugins/plugin-layout
+		 * 这种文档是人类能看懂的吗，艹 艹 艹
+		 */
+		logout: () => {
+			// 这里居然是 lagout 的处理函数，我搜遍整个 github 的 code 都找不到用例
+			store2.remove('token');
+			window.location.reload();
+		},
 	};
 }
 
@@ -40,8 +49,6 @@ export async function getInitialState() {
  * 这个 layout 字段，是 umi layout 的【运行时】配置
  * umi layout，需要在 .umirc 里【开启】，并且写入【构建时】配置：
  * https://umijs.org/docs/max/layout-menu
- *
- * 这个是和 umi 一起使用对一个文档，一定要看：
  * https://procomponents.ant.design/components/layout#%E5%92%8C-umi-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8
  *
  * 这个配置里对返回值，是 umi 暴露给我们的，我们要按照 umi 对约定来
@@ -52,12 +59,10 @@ export async function getInitialState() {
  * 这里有一点要注意，虽然文档说，都能透传给 proLayout
  * 但是还是发现有些 props 【不能】生效
  */
-export const layout = () => {
+export const layout = ({ initialState }: any) => {
 	return {
-		// 没研究出来
-		// logout: () => {
-		//   alert(123123)
-		// },
+		// 这个一定要在 initialState 里写好 logout 的事件处理函数
+		logout: initialState.logout,
 		siderWidth: 180,
 		logo: (
 			<img src={logo} style={{ height: '60px', marginRight: '.5em' }} />
@@ -68,11 +73,14 @@ export const layout = () => {
 			);
 		},
 		postMenuData(data: any) {
-			// 为了删除一个 umi 特定对标记，真的垃圾
-			const removeDOM = document.querySelector(
-				'.umi-plugin-layout-right'
-			) as any;
-			if (removeDOM) removeDOM.innerHTML = '';
+			/**
+			 * 为了删除一个 umi 特定对标记，真的垃圾
+			 * 后来这个注释掉了，我 TM 发现，这个还和 logout 深度耦合
+			 */
+			// const removeDOM = document.querySelector(
+			// 	'.umi-plugin-layout-right'
+			// ) as any;
+			// if (removeDOM) removeDOM.innerHTML = '';
 
 			// 要返回 data 来下一步处理菜单
 			return data;
@@ -89,16 +97,16 @@ export function onRouteChange({ location, routes, action }: any) {
 	 * 本来想在 render 里写的，没想到智障的 umi 拿不到 dva
 	 */
 	if (!store2.get('token')) return;
-	const dva = getDvaApp();
-	const authModel = dva._models.find(
-		(item: any) => item.namespace === 'authStatus'
-	);
-	if (!authModel.state.inited) {
-		const { dispatch } = dva._store;
-		dispatch({
-			type: 'authStatus/reqAuth',
-		});
-	}
+	// const dva = getDvaApp();
+	// const authModel = dva._models.find(
+	// 	(item: any) => item.namespace === 'authStatus'
+	// );
+	// if (!authModel.state.inited) {
+	// 	const { dispatch } = dva._store;
+	// 	dispatch({
+	// 		type: 'authStatus/reqAuth',
+	// 	});
+	// }
 }
 
 /**
@@ -107,10 +115,12 @@ export function onRouteChange({ location, routes, action }: any) {
 export function render(oldRender: () => any) {
 	oldRender();
 	/**
+	 * 艹，惊人的发现
 	 * 一定要写在 oldRender 后面，才能拿到 history
 	 */
 	if (!store2.get('token')) {
-		history.push('/login');
+		// TODO: 清空路由栈
+		history.replace('/login');
 		return;
 	}
 }
