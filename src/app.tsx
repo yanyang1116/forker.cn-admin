@@ -3,20 +3,36 @@
  * https://v3.umijs.org/zh-CN/docs/runtime-config
  * 我真实觉得 umi 太难用了
  */
-
-// 全局初始化数据配置，用于 Layout 用户信息和权限初始化
-// 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
 import { getDvaApp, history } from '@umijs/max';
 import store2 from 'store2';
+
+import { authStatus as authStatusApi } from './api/common/index';
 import logo from './assets/mz.jpeg';
 
-export async function getInitialState(): Promise<{
-	name: string;
-	logout: Record<string, any>;
-}> {
+/**
+ * 初始化数据，可以在各个插件中被使用，真是个 sb 的设计
+ * https://v3.umijs.org/zh-CN/plugins/plugin-initial-state
+ *
+ * 这里呢，为了使用这个插件，我是【强行】用的，把权限数据单独请求一份保存进去
+ * 实际上，这个文件里切换路由【onRouteChange】里也会做权限处理，并且存一个单独的 model
+ * 如果这个权限插件只和菜单关联的话，在这个文件的【postMenuData】里修改菜单数据，也能实现同样的效果
+ */
+export async function getInitialState() {
+	// 因为目前拿不到 dva，所以不能通过 dispatch 派发，只能 ajax 请求获取
+	let auth: IAuthStatus = {
+		edit: false,
+		view: false,
+		delete: false,
+		create: false,
+	};
+	if (store2.get('token')) {
+		// 不 catch 了，静默失败
+		await authStatusApi().then((res) => {
+			auth = res;
+		});
+	}
 	return {
-		name: '@umijs/max',
-		logout: {},
+		auth,
 	};
 }
 
@@ -57,6 +73,7 @@ export const layout = () => {
 				'.umi-plugin-layout-right'
 			) as any;
 			if (removeDOM) removeDOM.innerHTML = '';
+
 			// 要返回 data 来下一步处理菜单
 			return data;
 		},

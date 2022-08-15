@@ -11,6 +11,9 @@
 import { EnumArticleStatus } from './global.enum';
 
 declare global {
+	interface IAppInitialState {
+		auth: IAuthStatus;
+	}
 	interface IResponseError {
 		message: string;
 	}

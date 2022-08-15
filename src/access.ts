@@ -1,10 +1,10 @@
-export default (initialState: API.UserInfo) => {
-  // 在这里按照初始化数据定义项目中的权限，统一管理
-  // 参考文档 https://next.umijs.org/docs/max/access
-  const canSeeAdmin = !!(
-    initialState && initialState.name !== 'dontHaveAccess'
-  );
-  return {
-    canSeeAdmin,
-  };
+/**
+ * access 插件，真 TM 难用
+ * https://v3.umijs.org/zh-CN/plugins/plugin-access
+ * https://next.umijs.org/docs/max/access
+ */
+export default (initialState: IAppInitialState) => {
+	return {
+		...initialState.auth,
+	};
 };

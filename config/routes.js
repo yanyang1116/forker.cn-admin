@@ -13,12 +13,15 @@ export default [
 		path: '/',
 		component: './Index',
 		icon: 'pieChart',
+		// umi 的 access.ts 插件定义的权限显示功能
+		access: 'view',
 		exact: true,
 	},
 	{
 		name: '新建',
 		icon: 'edit',
 		path: '/edit',
+		access: 'create',
 		component: './Edit',
 		routes: [
 			{
@@ -41,6 +44,7 @@ export default [
 		icon: 'snippets',
 		name: '列表',
 		path: '/list',
+		access: 'view',
 		component: './List',
 		exact: true,
 	},
@@ -49,6 +53,7 @@ export default [
 		icon: 'delete',
 		path: '/Trash',
 		component: './Trash',
+		access: 'edit',
 		exact: true,
 	},
 	/**
