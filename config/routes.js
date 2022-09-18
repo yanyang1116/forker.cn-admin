@@ -61,6 +61,7 @@ export default [
 	 */
 	{
 		path: '/login',
+		name: '登录',
 		component: './Login',
 		exact: true,
 		// 到来这个路由，整个菜单不展示

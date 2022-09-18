@@ -9,15 +9,19 @@ import { authStatus as authStatusApi } from './api/common/index';
 import logo from './assets/mz.jpeg';
 
 /**
- * 初始化数据，可以在各个插件中被使用，真是个 sb 的设计
+ * 初始化数据，可以在各个插件中被使用
  * https://v3.umijs.org/zh-CN/plugins/plugin-initial-state
  *
  * 这里呢，为了使用这个插件，我是【强行】用的，把权限数据单独请求一份保存进去
  * 实际上，这个文件里切换路由【onRouteChange】里也会做权限处理，并且存一个单独的 model
  * 如果这个权限插件只和菜单关联的话，在这个文件的【postMenuData】里修改菜单数据，也能实现同样的效果
+ *
+ * -----------------------------------------------------------------------------------
+ * getInitialState 方法在整个 app 中处理重刷，只会调用一次
  */
 export async function getInitialState() {
-	// 因为目前拿不到 dva，所以不能通过 dispatch 派发，只能 ajax 请求获取
+	console.log(123123123123213);
+	// 因为目前拿不到 dva，所以不能通过 dispatch 派发
 	let auth: IAuthStatus = {
 		edit: false,
 		view: false,
@@ -31,7 +35,7 @@ export async function getInitialState() {
 		});
 	}
 	return {
-		auth,
+		auth, // 默认都为 false 如果失败了
 		/**
 		 * 艹！真是沙雕文档
 		 * https://v3.umijs.org/zh-CN/plugins/plugin-layout
@@ -40,7 +44,7 @@ export async function getInitialState() {
 		logout: () => {
 			// 这里居然是 lagout 的处理函数，我搜遍整个 github 的 code 都找不到用例
 			store2.remove('token');
-			window.location.reload();
+			// window.location.reload();
 		},
 	};
 }
@@ -73,15 +77,6 @@ export const layout = ({ initialState }: any) => {
 			);
 		},
 		postMenuData(data: any) {
-			/**
-			 * 为了删除一个 umi 特定对标记，真的垃圾
-			 * 后来这个注释掉了，我 TM 发现，这个还和 logout 深度耦合
-			 */
-			// const removeDOM = document.querySelector(
-			// 	'.umi-plugin-layout-right'
-			// ) as any;
-			// if (removeDOM) removeDOM.innerHTML = '';
-
 			// 要返回 data 来下一步处理菜单
 			return data;
 		},
@@ -96,7 +91,15 @@ export function onRouteChange({ location, routes, action }: any) {
 	 * 权限未初始化过，重新请求
 	 * 本来想在 render 里写的，没想到智障的 umi 拿不到 dva
 	 */
-	if (!store2.get('token')) return;
+	// console.log(location, routes, action);
+	// pathname: "/login"
+	if (!store2.get('token') && location.pathname !== '/login') {
+		history.replace('/login');
+		return;
+	}
+	// if (!store2.get('token') && location.pathname !== '/login') {
+
+	// }
 	// const dva = getDvaApp();
 	// const authModel = dva._models.find(
 	// 	(item: any) => item.namespace === 'authStatus'
@@ -118,9 +121,8 @@ export function render(oldRender: () => any) {
 	 * 艹，惊人的发现
 	 * 一定要写在 oldRender 后面，才能拿到 history
 	 */
-	if (!store2.get('token')) {
-		// TODO: 清空路由栈
-		history.replace('/login');
-		return;
-	}
+	// if (!store2.get('token')) {
+	// 	history.replace('/login');
+	// 	return;
+	// }
 }
